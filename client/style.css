@@ -1,0 +1,64 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #000;
+  overflow: hidden;
+  font-family: 'Courier New', monospace;
+}
+
+#game-container {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Landscape Warning — default tersembunyi */
+#landscape-warning {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: #000;
+  color: #FFF;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  z-index: 9999;
+  text-align: center;
+  padding: 20px;
+}
+
+.rotate-icon {
+  font-size: 80px;
+  animation: rotate 2s infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes rotate {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(90deg); }
+}
+
+/* Tampilkan warning kalau HP portrait */
+@media screen and (orientation: portrait) and (max-width: 900px) {
+  #landscape-warning {
+    display: flex;
+  }
+  #game-container {
+    display: none;
+  }
+}
+
+/* Input styling */
+input[type="text"] {
+  background: #111;
+  color: #FFF;
+  border: 2px solid #FFF;
+  font-family: 'Courier New', monospace;
+  outline: none;
+}

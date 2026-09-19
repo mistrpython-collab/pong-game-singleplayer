@@ -1,0 +1,13 @@
+{
+  "name": "pong-game",
+  "version": "1.0.0",
+  "description": "Pong dengan single player dan multiplayer",
+  "scripts": {
+    "start": "node server/server.js",
+    "dev": "node server/server.js"
+  },
+  "dependencies": {
+    "express": "^4.21.2",
+    "socket.io": "^4.8.0"
+  }
+}
