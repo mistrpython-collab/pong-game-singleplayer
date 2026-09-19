@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Pong Game</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- Socket.IO Client dari CDN (pengganti /socket.io/socket.io.js) -->
+  <script src="https://cdn.socket.io/4.8.0/socket.io.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.80.1/dist/phaser.min.js"></script>
+</head>
+<body>
+  <!-- Landscape Warning -->
+  <div id="landscape-warning">
+    <div class="rotate-icon">📱</div>
+    <h2>Putar HP ke Landscape</h2>
+    <p>Game ini memerlukan posisi horizontal untuk bermain</p>
+  </div>
+
+  <div id="game-container"></div>
+
+  <script src="js/network.js"></script>
+  <script src="js/scenes/MenuScene.js"></script>
+  <script src="js/scenes/SinglePlayerScene.js"></script>
+  <script src="js/scenes/LobbyScene.js"></script>
+  <script src="js/scenes/MultiplayerGameScene.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
