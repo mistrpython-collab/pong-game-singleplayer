@@ -39,7 +39,7 @@ class SinglePlayerScene extends Phaser.Scene {
 
     // State
     this.state = {
-      ball: { x: 400, y: 300, vx: 5, vy: 3 },
+      ball: { x: 400, y: 300, vx: 5, vy: 0 },
       score: [0, 0],
       winner: null
     };
@@ -74,7 +74,7 @@ class SinglePlayerScene extends Phaser.Scene {
   update() {
     if (this.state.winner !== null) return;
 
-    // ===== KONTROL PEMAIN BERDASARKAN inputMode =====
+    // Kontrol pemain via keyboard
     if (this.inputMode === 'keyboard') {
       const speed = 8;
       if (this.keys.W.isDown || this.cursors.up.isDown) {
@@ -85,7 +85,7 @@ class SinglePlayerScene extends Phaser.Scene {
       }
     }
 
-    // ===== AI =====
+    // AI
     const targetY = this.state.ball.y - 50;
     const diff = targetY - this.paddleRight.y;
     if (Math.abs(diff) > 5) {
@@ -108,6 +108,7 @@ class SinglePlayerScene extends Phaser.Scene {
     }
   }
 
+  // ===== BOLA DENGAN ANGLE REFLECTION =====
   updateBall() {
     const ball = this.state.ball;
     ball.x += ball.vx;
@@ -117,29 +118,44 @@ class SinglePlayerScene extends Phaser.Scene {
     if (ball.y <= 8) { ball.y = 8; ball.vy = Math.abs(ball.vy); }
     if (ball.y >= 592) { ball.y = 592; ball.vy = -Math.abs(ball.vy); }
 
-    // Paddle kiri (pemain)
+    // ===== PADDLE KIRI (Pemain) — ANGLE REFLECTION =====
     if (ball.x <= 40 && ball.x >= 17 &&
         ball.y >= this.paddleLeft.y &&
         ball.y <= this.paddleLeft.y + 100 &&
         ball.vx < 0) {
-      ball.vx = Math.abs(ball.vx) * 1.05;
+      
+      // Hitung posisi bola relatif terhadap paddle (0=atas, 1=bawah)
+      const relativeY = (ball.y - this.paddleLeft.y) / 100;
+      // Konversi ke sudut (-1=atas, 0=tengah, +1=bawah)
+      const angle = (relativeY - 0.5) * 2;
+      
+      const speed = Math.min(Math.abs(ball.vx) * 1.05, 15);
+      
+      ball.vx = speed;
+      ball.vy = speed * angle * 0.75; // 0.75 = tingkat ketajaman sudut
       ball.x = 40;
     }
 
-    // Paddle kanan (AI)
+    // ===== PADDLE KANAN (AI) — ANGLE REFLECTION =====
     if (ball.x >= 760 && ball.x <= 783 &&
         ball.y >= this.paddleRight.y &&
         ball.y <= this.paddleRight.y + 100 &&
         ball.vx > 0) {
-      ball.vx = -Math.abs(ball.vx) * 1.05;
+      
+      const relativeY = (ball.y - this.paddleRight.y) / 100;
+      const angle = (relativeY - 0.5) * 2;
+      
+      const speed = Math.min(Math.abs(ball.vx) * 1.05, 15);
+      
+      ball.vx = -speed;
+      ball.vy = speed * angle * 0.75;
       ball.x = 760;
     }
 
     // Batas kecepatan
     const maxSpeed = 15;
-    if (Math.abs(ball.vx) > maxSpeed) {
-      ball.vx = Math.sign(ball.vx) * maxSpeed;
-    }
+    if (Math.abs(ball.vx) > maxSpeed) ball.vx = Math.sign(ball.vx) * maxSpeed;
+    if (Math.abs(ball.vy) > maxSpeed) ball.vy = Math.sign(ball.vy) * maxSpeed;
 
     // Skor
     if (ball.x < -20) {
